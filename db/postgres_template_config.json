@@ -1,0 +1,8 @@
+{"config": {
+  "host": "localhost",
+  "db_name": "postgres",
+  "user": "postgres",
+  "secret": "secret",
+  "port": 5432
+}
+}
