@@ -5,7 +5,7 @@ import {ResetDataBase, ExecuteNewTask } from "./Endpoins.jsx"
 function TaskMenu() {
     const [count, setCount] = useState(0)
     const [form] = Form.useForm();
-    const [formInputsWidth, setFormInputsWidth] = useState('15%');
+    const [formInputsWidth, setFormInputsWidth] = useState('30%');
 
 
     const onClick = () => {
@@ -14,13 +14,15 @@ function TaskMenu() {
         let master_id;
         let assignee_master_id;
         let data;
+        let system;
         project_id = form.getFieldValue(["project_id"])
         thematic_id = form.getFieldValue(["thematic_id"])
         master_id = form.getFieldValue(["master_id"])
         assignee_master_id = form.getFieldValue(["assignee_master_id"])
         data = JSON.parse(form.getFieldValue(["special_data"]))
+        system = "WEB"
 
-        ExecuteNewTask(project_id, thematic_id, master_id, assignee_master_id, data)
+        ExecuteNewTask(project_id, thematic_id, master_id, assignee_master_id, data, system)
 
     };
     const onResetDBButton = () => {
@@ -47,8 +49,8 @@ function TaskMenu() {
         <Form.Item label="Master ID" style={{ width: formInputsWidth }} name="master_id">
             <Input placeholder="Your master ID" />
         </Form.Item>
-        <Form.Item label="Assignee Master ID (Optional)" style={{ width: formInputsWidth }} name="assignee_master_id">
-            <Input placeholder="" />
+        <Form.Item label="Assignee" style={{ width: formInputsWidth }} name="assignee_master_id">
+            <Input placeholder="Optional" />
         </Form.Item>
         <Form.Item label="Special Data" style={{ width: formInputsWidth }} name="special_data">
             <Input placeholder='{"key0":"value0","key1":"value1"...}'/>

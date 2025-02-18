@@ -1,21 +1,8 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from config import settings
 from api.routers import all_routers
-
-
-class Settings(BaseSettings):
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_HOST: str
-    POSTGRES_PORT: int
-    POSTGRES_DB: str
-
-    model_config = SettingsConfigDict(env_file=".env")
-
-# settings = Settings()
 
 
 origins = [
@@ -40,10 +27,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 for router in all_routers:
     app.include_router(router)
 
 
 if __name__ == "__main__":
-    uvicorn.run(app)
+    uvicorn.run(app, host=settings.FASTAPI_HOST, port=8000)

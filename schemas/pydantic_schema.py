@@ -16,7 +16,9 @@ class SRActivityAddSchema(BaseSchema):
     activity_id: str = Field(min_length=12, max_length=12)
     assignment_id: Optional[str] = Field(default=None, max_length=12)
     status_id: Optional[str] = Field(default=None, max_length=12)
-    comment__id: Optional[str] = Field(default=None, max_length=12)
+    comment_id: Optional[str] = Field(default=None, max_length=12)
+    sd_id: Optional[str] = Field(default=None, max_length=12)
+
 
 
 class SRTaskAddSchema(BaseSchema):
@@ -24,6 +26,13 @@ class SRTaskAddSchema(BaseSchema):
     thematic_id: str = Field(min_length=3, max_length=12)
     assignee_master_id: Optional[str] = Field(default='R1-JP1GH2', pattern=r"[R]\d-\w{6}")
     data: dict[str, Any]
+    system: str
+
+
+class SDAddSchema(BaseSchema):
+    activity_id: str = Field(min_length=12, max_length=12)
+    desc: str = Field(min_length=1, max_length=100)
+
 
 
 class SRStatusAddSchema(EditSchema):
@@ -49,3 +58,4 @@ class UserAddSchema(BaseSchema):
     user_status: str = Field(min_length=3, max_length=12, default='NEW')
     user_primary_group: Optional[str] = Field(min_length=5, max_length=12, pattern=r"^acc_\w*", default="acc_none")
     user_secondary_group: Optional[str] = Field(min_length=5, max_length=12, pattern=r"^acc_\w*", default="acc_none")
+

@@ -1,6 +1,7 @@
-from schemas.pydantic_schema import SRActionWizardAddSchema
+from schemas.pydantic_schema import SRActionWizardAddSchema, SRTaskAddSchema
 from schemas.project_schema import data_schema, projects
-from services.task_builder import Builder, v, setv
+from services.activity_service import ActivityService
+from services.task_builder import Builder
 
 
 class CustomObject:
@@ -23,37 +24,44 @@ async def ThematicValidation(thematic: str):
 
 async def DataValidation(data: dict, project: str, thematic: str):
     template_name = await GetSpecialDataTemplateName(project, thematic)
-    template = await GetSpecialDataTemplate(template_name)
-    if not template:
-        pass
-    elif template.keys() == data.keys():
-        setv(True)
+
+    if not template_name[0]:
+        return template_name
+
+    template = await GetSpecialDataTemplate(template_name[1])
+    if not template[0]:
+        return template
+
+    elif template[1].keys() == data.keys():
+        return True, 'ok'
+
     else:
-        setv(False, "Special data haven't mandatory template_keys")
+        return False, f'Incorrect template data, must be in format {template[1]}'
 
 
 async def GetSpecialDataTemplateName(project: str, thematic: str):
     try:
-        return projects[project]['issues_thematics'][thematic]['schema']
+        return True, projects[project]['issues_thematics'][thematic]['schema']
     except KeyError:
-        setv(False, "Project/Thematic not found")
+        return False, 'Incorrect project'
 
 
 async def GetSpecialDataTemplate(template_name: str):
     try:
-        return data_schema[template_name]
+        return True, data_schema[template_name]
     except:
-        setv(False, "No such template")
+        return False, 'No data schema for project'
 
 
 class ManagerService:
-    async def new_task(self, task):
-        print(task)
-        await DataValidation(task.data, task.project_id, task.thematic_id)
-        if v.status:
-            return await Builder.TaskBuilder(task)
+    async def new_task(self, task: SRTaskAddSchema):
+        state = [False, ]
+        validation = await DataValidation(task.data, task.project_id, task.thematic_id)
+        if validation[0]:
+            master_activity = await ActivityService.MainWizard(master_id=task.master_id, interface=task.system)
+            return await Builder.TaskBuilder(task, master_activity)
         else:
-            return v
+            return {"ok": validation[0], "details": validation[1]}
 
     async def get_projects_data(self):
         thema = {}
@@ -66,3 +74,8 @@ class ManagerService:
 
     async def wizard(self, data: SRActionWizardAddSchema):
         master_id = data.master_id
+
+
+class ManagerSD:
+    async def new_sd(self, sd):
+        ...

@@ -1,42 +1,13 @@
-from uuid import uuid4
-from datetime import datetime as dt
+import asyncio
+
+from services.activity_service import AlchemyMonster, ActivityService
+from services.utils import ts, uuidg
 from schemas.project_schema import projects
 from models.data_models import *
-from schemas.pydantic_schema import SRTaskAddSchema, SRActionWizardAddSchema
-from db.db import new_session
-
-
-def ts():
-    a = dt.now().strftime("%Y-%m-%d %H:%M:%S")
-    return a
-
-
-class Validation:
-    status: bool
-    details: str
-    status_code: int = 200
-
-    @classmethod
-    def set_validation(cls, status=True, details="success"):
-        Validation.details = details
-        Validation.status = status
-        if not status:
-            Validation.status_code = 422
-
-
-v = Validation()
-setv = v.set_validation
+from schemas.pydantic_schema import SRTaskAddSchema, SRActionWizardAddSchema, SDAddSchema
 
 
 class Builder:
-
-    @classmethod
-    def uuid_generator(cls, prefix=None):
-        uuid_short = str(uuid4())[-8:]
-        if prefix is not None:
-            uuid_short = prefix + uuid_short
-        # uuid_long = str(uuid4())
-        return uuid_short.upper()
 
     def __GetStartAssigner(self, project, thematic):
         return projects['projects'][project]['issues_thematics'][thematic]['start_assigner']
@@ -45,7 +16,7 @@ class Builder:
         data = SRAssignment(
             datetime=dtime,
             activity_id=activity_id,
-            assignment_id=self.uuid_generator("AAN-"),
+            assignment_id=uuidg("AAN-"),
             assignee_master_id=assignee.upper(),
         )
         return data
@@ -54,7 +25,7 @@ class Builder:
         data = SRStatus(
             datetime=dtime,
             activity_id=activity_id,
-            status_id=self.uuid_generator("AST-"),
+            status_id=uuidg("AST-"),
             status=NewStatus,
         )
         return data
@@ -63,13 +34,14 @@ class Builder:
         data = SRComment(
             datetime=dtime,
             activity_id=activity_id,
-            comment_id=self.uuid_generator("ACM-"),
+            comment_id=uuidg("ACM-"),
             comment_text=comment,
         )
         return data
 
-    def __NewActivity(self, dtime, task_id, master_id, new_assign=None, new_status=None, new_comment=None):
-        activity_id = self.uuid_generator("AAC-")
+    def __NewActivity(self, dtime, task_id, master_activity, master_id, new_assign=None, new_status=None,
+                      new_comment=None):
+        activity_id = uuidg("AAC-")
         assignment_id, status_id, comment_id = None, None, None
         if new_assign is not None:
             new_assign = self.__NewAssign(dtime, activity_id, new_assign)
@@ -83,6 +55,7 @@ class Builder:
         new_activity = SRActions(
             datetime=dtime,
             activity_id=activity_id,
+            master_activity=master_activity,
             task_id=task_id,
             master_id=master_id,
             assignment_id=assignment_id,
@@ -92,9 +65,13 @@ class Builder:
         return new_activity, new_assign, new_status, new_comment
 
     @classmethod
-    async def TaskBuilder(cls, task: SRTaskAddSchema):
+    async def SDBuilder(cls, sd: SDAddSchema):
+        ...
+
+    @classmethod
+    async def TaskBuilder(cls, task: SRTaskAddSchema, master_activity):
         dtime = ts()
-        task_id = Builder.uuid_generator("XT-")
+        task_id = uuidg("XT-")
         new_assigner = task.assignee_master_id
         new_status = "NEW"
         if new_assigner is None:
@@ -104,6 +81,7 @@ class Builder:
         activity_models = Builder().__NewActivity(
             dtime=dtime,
             task_id=task_id,
+            master_activity=master_activity,
             master_id=task.master_id,
             new_assign=new_assigner,
             new_status=new_status
@@ -118,8 +96,8 @@ class Builder:
             status=new_status,
             data=task.data,
         )
-        await Builder().__SendTransaction(new_task, *activity_models)
-        return v
+
+        return await Builder().__SendTransaction((new_task, *activity_models), master_activity)
 
     @classmethod
     async def ActionWizard(cls, wizard: SRActionWizardAddSchema):
@@ -128,25 +106,24 @@ class Builder:
             dtime=dtime,
             task_id=wizard.task_id,
             master_id=wizard.master_id,
-            new_assign=wizard.new_assign,
-            new_status=wizard.new_status,
-            new_comment=wizard.new_comment,
+            new_assign=wizard.assignee_master_id,
+            new_status=wizard.status,
+            new_comment=wizard.comment_text,
+
         )
 
-    async def __SendTransaction(self, new_task, new_activity, new_assign, new_status, new_comment):
-        async with new_session() as session:
-            if new_task is not None:
-                session.add(new_task)
-            if new_activity is not None:
-                session.add(new_activity)
-            if new_assign is not None:
-                session.add(new_assign)
-            if new_status is not None:
-                session.add(new_status)
-            if new_comment is not None:
-                session.add(new_comment)
-            try:
-                await session.commit()
-                setv(status=True, details={"task": "ok", "task_id": new_task.task_id})
-            except:
-                await session.rollback()
+    @classmethod
+    async def ActivityWizard(cls, wizard: SRActionWizardAddSchema):
+        ...
+
+    async def __SendTransaction(self, mods, master_activity: str):
+        stk = []
+        for mod in mods:
+            if mod is not None:
+                stk.append(mod)
+            task_res = await AlchemyMonster(models=stk).am_add()
+        master_res = await ActivityService.UpdateMain(master_activity=master_activity,
+                                                      slave_activity=mods[2].activity_id)
+        print(f"{master_res=}\n{task_res=}")
+        if master_res == task_res == True:
+            return {"ok": True, "task_id": mods[0].task_id}

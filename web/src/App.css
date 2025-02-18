@@ -1,0 +1,450 @@
+/* Filename: App.css */
+
+.background {
+    background-image: url("/background.jpg");
+}
+
+
+html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: no-repeat 50% / cover
+}
+
+.cBody,#body_rest {
+    width: 100%;
+    height: 100%;
+    background: none
+}
+
+.ctd {
+    display: table-cell;
+    vertical-align: middle
+}
+
+.cpBox {
+    min-width: 400px;
+    display: inline-block;
+    min-height: 400px;
+    border: 1px solid #CCC;
+    padding: 40px 40px 30px;
+    border-radius: 5px;
+    background: #FFFFFF;
+    background: rgba(255,255,255,0.9);
+    position: relative;
+    overflow: hidden;
+    word-wrap: break-word;
+    box-shadow: 0 0 38px -17px #000
+}
+
+.cpBox,.cpBox * {
+    box-sizing: border-box
+}
+
+.cpBox .logo img {
+    width: 50px;
+    height: 34px
+}
+
+.cpBox .logo a {
+    display: inline-block;
+    margin: 0 auto 25px
+}
+
+.cpBox h1 {
+    font-size: 24px;
+    font-weight: 100;
+    margin-bottom: 15px
+}
+
+.cpBox .subOpt {
+    text-align: left;
+    width: 100%;
+    margin-top: 90px;
+    display: table
+}
+
+.cpBox .subOpt>a,.cpBox .subOpt>form {
+    display: table-cell
+}
+
+.cpBox .subOpt>a:last-child,.cpBox .subOpt>form:last-child {
+    text-align: right
+}
+
+.cpBox .subOpt button {
+    background: none;
+    display: inline;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: #3B5998;
+    text-decoration: none;
+    perspective-origin: 0 0;
+    transform-origin: 0 0;
+    -moz-appearance: none;
+    cursor: pointer
+}
+
+.cpBox .bkBtn {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    display: inline-block;
+    overflow: hidden;
+    margin: 0 10px -7px -40px;
+    cursor: pointer
+}
+
+.cpBox .bkBtn:hover {
+    background: #CCC
+}
+
+.bbAr{text-align:right}
+
+
+.uiInput{
+    border-radius:3px;
+    border:1px solid;
+    border-color:#A4A4A4 #B9B9B9 #B9B9B9;
+    color:inherit;
+    box-shadow:0 1px 0 #fff,0 1px 1px rgba(0,0,0,0.17) inset
+}
+
+
+.fmw {
+    width: 370px
+}
+
+.fw {
+    width: 320px
+}
+
+.signup .radio {
+    margin-right: 10px
+}
+
+.signup .ft {
+    float: right
+}
+
+.pp {
+    width: 120px;
+    margin: -90px auto 10px
+}
+
+.pp img {
+    height: 120px;
+    width: 120px
+}
+
+.radio span {
+    cursor: pointer;
+    padding: 5px 35px;
+    display: inline-block;
+    position: relative;
+    margin: 5px 0
+}
+
+.radio span:hover {
+    background: rgba(150,150,150,0.1)
+}
+
+.radio span:before {
+    content: " ";
+    width: 25px;
+    height: 100%;
+    background: #bcbcbc;
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+.Darkness .radio span:before {
+    background: #130
+}
+
+.radio input {
+    display: none
+}
+
+.radio input:checked+span {
+    background: rgba(106,152,16,0.2)
+}
+
+.radio input:checked+span:before {
+    background: #9bca3e;
+    box-shadow: 1px 1px 1px rgba(255,255,225,0.3) inset
+}
+
+.Darkness .radio input:checked+span:before {
+    background: #6a9810
+}
+
+.optBtn {
+    text-align: left;
+    padding: 15px 40px 15px 93px;
+    margin: 0 -40px;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    color: inherit
+}
+
+.optBtn>div:first-child {
+    line-height: 20px
+}
+
+.optBtn:hover {
+    background-color: #e6e6e6;
+    background-color: rgba(0,0,0,0.1);
+    color: inherit
+}
+
+.optBtn:hover:after {
+    filter: none
+}
+
+.optBtn:after {
+    content: "";
+    display: block;
+    background: no-repeat 50%;
+    position: absolute;
+    top: 50%;
+    left: 40px;
+    height: 40px;
+    width: 40px;
+    margin-top: -20px;
+    filter: grayscale(1)
+}
+
+.uiBtn {
+    padding: 8px 25px;
+    background: #47E;
+    color: #FFF;
+    border: none;
+    border-radius: 3px;
+    font-size: 15px;
+    cursor: pointer
+}
+
+a.uiBtn {
+    display: inline-block
+}
+
+a.uiBtn:hover {
+    color: #FFF
+}
+
+.uiIn {
+    position: relative;
+    min-height: 80px;
+    text-align: left
+}
+
+.wrap>.uiIn:not(:last-child) {
+    min-height: initial
+}
+
+.uiIn input,.uiIn textarea,.uiIn select {
+    font-size: 16px;
+    padding: 20px 15px 10px;
+    border: 1px solid #AAA;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 3px
+}
+
+.uiIn input.err,.uiIn textarea.err,.uiIn select.err {
+    border-color: #F00
+}
+
+.uiIn input.err ~ .hint,.uiIn textarea.err ~ .hint,.uiIn select.err ~ .hint {
+    display: block
+}
+
+.uiIn textarea {
+    min-height: 140px;
+    resize: vertical;
+    font-size: 14px
+}
+
+.uiIn>.ph {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 16px;
+    color: #AAA;
+    transition: all .3s;
+    pointer-events: none
+}
+
+.uiIn>.ph .extra {
+    white-space: pre;
+    font-size: 13px
+}
+
+.uiIn .hint {
+    font-size: 12px;
+    padding: 5px;
+    color: #F00;
+    display: none
+}
+
+.uiIn .meter {
+    opacity: 0
+}
+
+.uiIn .meter .bars {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 5px;
+    z-index: 5;
+    position: absolute;
+    bottom: -2px
+}
+
+.uiIn .meter .bars>b {
+    display: table-cell;
+    background: #B00;
+    height: 3px;
+    border-radius: 5px;
+    visibility: hidden
+}
+
+.uiIn .meter .bars>b:first-child {
+    visibility: visible
+}
+
+.uiIn .ok ~ .meter .bars>b {
+    background: #F80
+}
+
+.uiIn .ok ~ .meter .bars>b:nth-child(2) {
+    visibility: visible
+}
+
+.uiIn .best ~ .meter .bars>b {
+    background: #080;
+    visibility: visible
+}
+
+.uiIn>input:focus+.ph,.uiIn>input:not(:placeholder-shown)+.ph,.uiIn>input.phold+.ph,.uiIn>textarea:focus+.ph,.uiIn>textarea:not(:placeholder-shown)+.ph,.uiIn>textarea.phold+.ph {
+    top: 5px;
+    font-size: 12px;
+    left: 8px
+}
+
+.uiIn>input:focus+.ph .extra,.uiIn>input:not(:placeholder-shown)+.ph .extra,.uiIn>input.phold+.ph .extra,.uiIn>textarea:focus+.ph .extra,.uiIn>textarea:not(:placeholder-shown)+.ph .extra,.uiIn>textarea.phold+.ph .extra {
+    display: none
+}
+
+.uiIn>input:not(:placeholder-shown) ~ .meter,.uiIn>textarea:not(:placeholder-shown) ~ .meter {
+    opacity: 1
+}
+
+.uiIn>select+.ph {
+    top: 5px;
+    font-size: 12px;
+    left: 8px
+}
+
+.animate {
+    animation-duration: .25s;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
+    animation-fill-mode: forwards
+}
+
+.animate.slideOutNext {
+    animation-name: h2l
+}
+
+.animate.slideInNext {
+    animation-name: sfr
+}
+
+.animate.slideOutBack {
+    animation-name: h2r
+}
+
+.animate.slideInBack {
+    animation-name: sfl
+}
+
+.shake {
+    animation: shake .5s linear
+}
+
+@keyframes h2l {
+    from {
+        transform: translateX(0%);
+        opacity: 1
+    }
+
+    to {
+        transform: translateX(-200px);
+        opacity: 0
+    }
+}
+
+@keyframes h2r {
+    from {
+        transform: translateX(0%);
+        opacity: 1
+    }
+
+    to {
+        transform: translateX(200px);
+        opacity: 0
+    }
+}
+
+@keyframes sfr {
+    from {
+        transform: translateX(200px);
+        opacity: 0
+    }
+
+    to {
+        transform: translateX(0%);
+        opacity: 1
+    }
+}
+
+@keyframes sfl {
+    from {
+        transform: translateX(-200px);
+        opacity: 0
+    }
+
+    to {
+        transform: translateX(0%);
+        opacity: 1
+    }
+}
+
+@keyframes shake {
+    8%,41% {
+        transform: translateX(-10px)
+    }
+
+    25%,58% {
+        transform: translateX(10px)
+    }
+
+    75% {
+        transform: translateX(-5px)
+    }
+
+    92% {
+        transform: translateX(5px)
+    }
+
+    0%,100% {
+        transform: translateX(0)
+    }
+}

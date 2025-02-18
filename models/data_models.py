@@ -15,12 +15,14 @@ class SRActions(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     datetime: Mapped[str]
+    master_activity: Mapped[str]
     activity_id: Mapped[str]
     task_id: Mapped[str]
     master_id: Mapped[str]
     assignment_id: Mapped[str] = mapped_column(nullable=True)
     status_id: Mapped[str] = mapped_column(nullable=True)
     comment_id: Mapped[str] = mapped_column(nullable=True)
+    sd_id: Mapped[str] = mapped_column(nullable=True)
 
 
 class SRTask(Base):
@@ -57,6 +59,17 @@ class SRAssignment(Base):
     assignee_master_id: Mapped[str]
 
 
+class SD(Base):
+    __tablename__ = 'SDs'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    datetime: Mapped[str]
+    activity_id: Mapped[str]
+    sd_id: Mapped[str]
+    master_id: Mapped[str]
+    desc: Mapped[str]
+
+
+
 class SRComment(Base):
     __tablename__ = 'Comments'
 
@@ -87,3 +100,14 @@ class UserGroup(Base):
     group_id: Mapped[str]
     group_description: Mapped[str]
     users: Mapped[str]
+
+
+class MasterActivity(Base):
+    __tablename__ = 'MasterActivity'
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    datetime: Mapped[str]
+    activity_id: Mapped[str]
+    activity_slave_id: Mapped[str] = mapped_column(nullable=True)
+    master_id: Mapped[str]
+    interface: Mapped[str]
