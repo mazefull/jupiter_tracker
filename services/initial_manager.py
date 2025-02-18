@@ -52,7 +52,7 @@ async def GetSpecialDataTemplate(template_name: str):
     except:
         return False, 'No data schema for project'
 
-
+#
 class ManagerService:
     async def new_task(self, task: SRTaskAddSchema):
         state = [False, ]

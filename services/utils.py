@@ -11,5 +11,5 @@ def uuidg(prefix=None):
     uuid_short = str(uuid4())[-8:]
     if prefix is not None:
         uuid_short = prefix + uuid_short
-    # uuid_long = str(uuid4())
+    # uuid_long = str(uuid4())#
     return uuid_short.upper()

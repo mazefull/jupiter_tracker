@@ -90,7 +90,7 @@ class User(Base):
     user_status: Mapped[str]
     user_primary_group: Mapped[str]
     user_secondary_group: Mapped[str] = mapped_column(nullable=True)
-
+#
 
 class UserGroup(Base):
     __tablename__ = 'UserGroups'

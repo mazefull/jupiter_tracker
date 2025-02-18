@@ -2,6 +2,7 @@ import psycopg2
 import json
 import os
 
+
 class config:
     def __init__(self, data=None):
         self.data = data

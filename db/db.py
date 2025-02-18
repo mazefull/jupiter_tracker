@@ -5,7 +5,7 @@ from models.data_models import Base
 engine = create_async_engine(url=settings.DB_URL_ASYNC, echo=True)
 new_session = async_sessionmaker(engine, expire_on_commit=False)
 
-
+#
 async def get_session():
     async with new_session() as session:
         yield session

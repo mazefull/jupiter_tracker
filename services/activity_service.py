@@ -17,6 +17,7 @@ class ActivityService:
         if await AlchemyMonster(models=(mdata,)).am_add():
             return mdata.activity_id
 
+    #
     @classmethod
     async def UpdateMain(cls, master_activity, slave_activity):
         mdata = MasterActivity(

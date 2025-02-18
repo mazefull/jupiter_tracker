@@ -21,7 +21,7 @@ router_main = APIRouter(
     prefix="",
     tags=["main"]
 )
-
+#
 
 @router_sr.post("/setup_db", summary='HARD RESET DB')
 async def setup_db():
