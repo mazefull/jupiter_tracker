@@ -3,9 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException, FastAPI
 
 from config import settings
 from db.db import reset_db
-from schemas.pydantic_schema import SRTaskAddSchema, SDAddSchema
+from schemas.pydantic_schema import SRTaskAddSchema, SDAddSchema, SRActionWizardAddSchema
 from services.initial_manager import ManagerService, ManagerSD
-
+from services.utils import validator_httpx
 
 router_sr = APIRouter(
     prefix="/tasks",
@@ -21,7 +21,7 @@ router_main = APIRouter(
     prefix="",
     tags=["main"]
 )
-#
+
 
 @router_sr.post("/setup_db", summary='HARD RESET DB')
 async def setup_db():
@@ -30,12 +30,20 @@ async def setup_db():
 
 @router_sr.post("/new_task")
 async def create_task(task: SRTaskAddSchema):
-    result = await ManagerService().new_task(task)
-    print("11 ", result)
-    if result["ok"] is False:
-        raise HTTPException(status_code=423, detail=result)
-    else:
-        return result
+    @validator_httpx
+    def raiser(*args):
+        raise HTTPException(*args)
+    raiser(await ManagerService.new_task(task))
+
+
+@router_sr.post("/task_wizard", summary='Task Management Wizard')
+async def TaskMultiAction(wizard: SRActionWizardAddSchema):
+    @validator_httpx
+    def raiser(*args):
+        raise HTTPException(*args)
+    raiser(await ManagerService.task_multi_action(wizard))
+
+
 
 
 @router_sd.post("/new_sd")

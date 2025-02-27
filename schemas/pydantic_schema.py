@@ -8,6 +8,7 @@ class BaseSchema(BaseModel):
 #
 class EditSchema(BaseSchema):
     task_id: str = Field(pattern=r"[XT]-\w{8}")
+    system: str
 
 
 class SRActivityAddSchema(BaseSchema):
@@ -48,9 +49,9 @@ class SRAssignmentAddSchema(EditSchema):
 
 
 class SRActionWizardAddSchema(EditSchema):
-    status: Optional[str] = Field(min_length=3, max_length=12)
-    comment_text: Optional[str] = Field(min_length=3, max_length=100)
-    assignee_master_id: Optional[str] = Field(min_length=12, max_length=12, pattern=r"[R]\d-\w{6}")
+    status: Optional[str] = Field(min_length=3, max_length=12, default=None)
+    comment_text: Optional[str] = Field(min_length=3, max_length=100, default=None)
+    assignee_master_id: Optional[str] = Field(pattern=r"[R]\d-\w{6}", default='R0-000001')
 
 
 class UserAddSchema(BaseSchema):

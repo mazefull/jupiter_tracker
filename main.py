@@ -33,4 +33,4 @@ for router in all_routers:
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host=settings.FASTAPI_HOST, port=8000)
+    uvicorn.run(app, host=settings.FASTAPI_HOST, port=settings.FASTAPI_PORT)

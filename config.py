@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
@@ -7,6 +8,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int
     POSTGRES_DB: str
     FASTAPI_HOST: str
+    FASTAPI_PORT: int
 
     @property
     def DB_URL_ASYNC(self):
@@ -14,5 +16,5 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env")
 
-#
+
 settings = Settings()
